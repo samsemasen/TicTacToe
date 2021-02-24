@@ -110,4 +110,6 @@ bool Board::isCellEmpty(int row , int column)
 {
     if (board[row][column] != 'X' && board[row][column] != 'O')
         return true;
+    else
+        return false;
 }

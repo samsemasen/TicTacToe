@@ -91,7 +91,7 @@ void Game::computerTurn()
     cout << "\tPlayer - 2 [O] turn : ";
 
     MiniMax minimax;
-    Move bestMove = minimax.findBestMove(*board_);
+    Move bestMove = minimax.findBestMove(board_);
 
     bool updated = board_->updateBoard(bestMove.row, bestMove.col, turn);
 

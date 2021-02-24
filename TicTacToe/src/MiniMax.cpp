@@ -9,9 +9,9 @@ using namespace std;
 // This is the minimax function. It considers all
 // the possible ways the game can go and returns
 // the value of the board
-int MiniMax::minimax(Board board, int depth, bool isMax)
+int MiniMax::minimax(Board* board, int depth, bool isMax)
 {
-    int score = board.evaluate();
+    int score = board->evaluate();
 
     // If Maximizer has won the game return his/her
     // evaluated score
@@ -25,7 +25,7 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
 
     // If there are no more moves and no winner then
     // it is a tie
-    if (!board.isMovesLeft())
+    if (!board->isMovesLeft())
         return 0;
 
     // If this maximizer's move
@@ -38,10 +38,13 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (board.isCellEmpty(i,j))
+                if (board->isCellEmpty(i, j))
                 {
+                    // before the move take the before value
+                    char beforeValue = board->board[i][j];
+
                     // Make the move
-                    board.board[i][j] = player;
+                    board->board[i][j] = player;
 
                     // Call minimax recursively and choose
                     // the maximum value
@@ -49,7 +52,7 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
                         minimax(board, depth + 1, !isMax));
 
                     // Undo the move
-                    board.board[i][j] = '.';
+                    board->board[i][j] = beforeValue;
                 }
             }
         }
@@ -66,10 +69,13 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (board.isCellEmpty(i, j))
+                if (board->isCellEmpty(i, j))
                 {
+                    // before the move take the before value
+                    char beforeValue = board->board[i][j];
+
                     // Make the move
-                    board.board[i][j] = opponent;
+                    board->board[i][j] = opponent;
 
                     // Call minimax recursively and choose
                     // the minimum value
@@ -77,7 +83,7 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
                         minimax(board, depth + 1, !isMax));
 
                     // Undo the move
-                    board.board[i][j] = '.';
+                    board->board[i][j] = beforeValue;
                 }
             }
         }
@@ -86,7 +92,7 @@ int MiniMax::minimax(Board board, int depth, bool isMax)
 }
 
 // This will return the best possible move for the opponent
-Move MiniMax::findBestMove(Board board)
+Move MiniMax::findBestMove(Board* board)
 {
     int bestVal = +1000;
     Move bestMove;
@@ -100,17 +106,20 @@ Move MiniMax::findBestMove(Board board)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (board.isCellEmpty(i,j))
+            bool isEmpty = board->isCellEmpty(i, j);
+            if (isEmpty)
             {
+                // before the move take the before value
+                char beforeValue = board->board[i][j];
                 // Make the move
-                board.board[i][j] = opponent;
+                board->board[i][j] = opponent;
 
                 // compute evaluation function for this
                 // move.
-                int moveVal = minimax(board, 0, false);//true??
+                int moveVal = minimax(board, 0, true);//false??
 
                 // Undo the move
-                board.board[i][j] = '.';
+                board->board[i][j] = beforeValue;
 
                 // If the value of the current move is
                 // more than the best value, then update
@@ -125,8 +134,7 @@ Move MiniMax::findBestMove(Board board)
         }
     }
 
-    printf("The value of the best Move is : %d\n\n",
-        bestVal);
+    cout << "The value of the best Move is :" << bestVal << " \n";
 
     return bestMove;
 }
