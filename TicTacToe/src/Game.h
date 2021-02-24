@@ -5,7 +5,7 @@
 class Game {
 public:
 	int choice;
-	int row, column;
+	int row, col;
 	char turn = 'X';
 	bool draw = false;
 	int evaluatedValue;

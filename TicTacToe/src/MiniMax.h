@@ -11,19 +11,17 @@ class MiniMax
 {
 public:
 
+	const int MAX = 1000;
+	const int MIN = -1000;
 
 	char player = 'X', opponent = 'O';
 
-	//MiniMax(Board* board);
 	MiniMax() = default;
 	~MiniMax() = default;
 
-	// A utility function to find Log n in base 2 
-	int log2(int n);
-
-	int minimax(Board* board, int depth, bool isMax);
+	int minimax(Board* board, int depth, bool isMax , int alpha , int beta);
 	Move findBestMove(Board* board);
 
 private:
-	Board* board_;
+
 };

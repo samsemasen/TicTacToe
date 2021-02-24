@@ -2,23 +2,18 @@
 
 Board::Board()
 {
-    int value = 1;
 	//initialize the board
 	for ( int i = 0; i < SIZE; i++)
 	{
 		for (int y = 0; y < SIZE; y++)
 		{
-			//board[i][y] = '.';
-			board[i][y] = '0' + value++;
+			board[i][y] = initialBoard[i][y];
 		}
 	}
 }
 
 void Board::displayBoard() 
 {
-
-    cout << "PLAYER - 1 [X] \t PLAYER - 2 [O]\n";
-
     cout << "\t     |     |     \n";
     cout << "\t  " << board[0][0] << "  |  " << board[0][1] << "  |  " << board[0][2] << " \n";
     cout << "\t_____|_____|_____\n";
@@ -32,23 +27,26 @@ void Board::displayBoard()
 
 bool Board::updateBoard(int row , int column , char value) 
 {
-    if (isCellEmpty(row,column)) 
-    {
+    if (isCellEmpty(row,column)) {
         board[row][column] = value;
         return true;
     }
-    else 
-    {
+    else {
         cout << "this spot is already filled , please choose another spot \n";
         return false;
     }
         
 }
 
-
+/// <summary> Checking for X or O victory. </summary>
+/// <returns>
+/// +10 for PLAYER [X] Victory,
+/// -10 for COMPUTER [O] Victory,
+///  0 if none of them have won
+/// </returns>
 int Board::evaluate()
 {
-    // Checking for Rows for X or O victory. 
+    //Checking for Rows
     for (int row = 0; row < 3; row++)
     {
         if (board[row][0] == board[row][1] && 
@@ -61,7 +59,7 @@ int Board::evaluate()
         }
     }
 
-    // Checking for Columns for X or O victory. 
+    // Checking for Columns 
     for (int col = 0; col < 3; col++)
     {
         if (board[0][col] == board[1][col] && 
@@ -74,7 +72,7 @@ int Board::evaluate()
         }
     }
 
-    // Checking for Diagonals for X or O victory. 
+    // Checking for Diagonals
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
     {
         if (board[0][0] == 'X')
@@ -90,13 +88,12 @@ int Board::evaluate()
             return -10;
     }
 
-    // Else if none of them have won then return 0 
     return 0;
 }
-//board
-//evoluation func
 
-
+/// <summary>
+/// Checks if there is any available space for making new move
+/// </summary>
 bool Board::isMovesLeft()
 {
     for (int i = 0; i < 3; i++)
@@ -106,6 +103,9 @@ bool Board::isMovesLeft()
     return false;
 }
 
+/// <summary>
+/// Checks if the selected cell with row and colomn contains X or O
+/// </summary>
 bool Board::isCellEmpty(int row , int column)
 {
     if (board[row][column] != 'X' && board[row][column] != 'O')
